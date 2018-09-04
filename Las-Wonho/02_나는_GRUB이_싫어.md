@@ -62,3 +62,52 @@
 일단 레거시때문에 16비트로 부팅이 된다. (윈도우처럼 호환을 중요시하나봐)
 그래도 적당히 쓸 명령은 있는데 진짜 거기서만 만들거는 아니잖아? 
 그런데 여기서 우리의 악마이자 천사인 *그럽*이 정보만 얻고 보호모드로 전환한다. 그래서 보호모드는 32비트 쓸 수 있으니까 써야한다는 거다. 4GB정도 접근이 가능 하다는데...
+
+근데 여기서 *그럽*이 얻은 정보를 우리가 받아야 하잖아? 그래서 이걸 구조체로 받는거야. 나중에 또 받으려면 많이 귀찮대. 
+
+```C++
+        uint32_t flags; //플래그. 플래그값을 확인해서 VESA 모드가 가능한지의 여부를 파악할 수 있다.
+	//바이오스로부터 얻은 이용가능한 메모리 영역 정보
+	uint32_t mem_lower;
+	uint32_t mem_upper;
+ 
+	uint32_t boot_device; //부팅 디바이스의 번호
+	char *cmdline; //커널에 넘기는 커맨드라인
+
+        //부팅 모듈 리스트
+	uint32_t mods_count;
+	Module *Modules;
+	//리눅스 파일과 관계된 정보
+	union
+	{
+		AOUTSymbolTable AOUTTable;
+		ELFHeaderTable ELFTable;
+	} SymbolTables;
+ 
+	//메모리 매핑 정보를 알려준다. 이 정보를 통해 메모리 특정 블록을 사용할 수 있는지 파악가능하다.
+	uint32_t mmap_length;
+	uint32_t mmap_addr;
+ 
+	//해당 PC에 존재하는 드라이브에 대한 정보
+	uint32_t drives_length;
+	drive_info * drives_addr;
+ 
+	// ROM configuration table 
+	ROMConfigurationTable *ConfigTable;
+ 
+	//부트로더 이름
+	char* boot_loader_name;
+ 
+	// APM table 
+	APMTable *APMTable;
+ 
+	//비디오
+	VbeInfoBlock *vbe_control_info;
+	VbeModeInfo *vbe_mode_info;
+	uint16_t vbe_mode;
+	uint16_t vbe_interface_seg;
+	uint16_t vbe_interface_off;
+	uint16_t vbe_interface_len;
+
+```
+이런 정보들이 우리에게 들어오게된다. 이런 귀찮은 것들을 그럽이라는 애가 대신해준다.
