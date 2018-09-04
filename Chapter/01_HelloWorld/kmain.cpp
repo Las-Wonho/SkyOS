@@ -46,7 +46,7 @@ void kmain(unsigned long magic, unsigned long addr)
 
 	SkyConsole::Initialize(); //화면에 문자열을 찍기 위해 초기화한다.
 
-	SkyConsole::Print("Hello World!!\n");
+	SkyConsole::Print("Las world for Wonho!!\n");
 
 	for (;;); //메인함수의 진행을 막음, 루프
 }
