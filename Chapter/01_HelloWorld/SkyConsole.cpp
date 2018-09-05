@@ -265,7 +265,7 @@ namespace SkyConsole
 	*/
 	void SetCursorType(unsigned char  Bottom, unsigned char  Top)
 	{
-		
+
 	}
 
 	void scrollup()		// scroll the screen up one line
