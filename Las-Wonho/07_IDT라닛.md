@@ -31,7 +31,7 @@ __declspec(naked) void InterrputDefaultHandler () {
     {
         PUSHAD //레지스터 값들을 스택에 저장(백업용)
         PUSHFD //플래그 값을 스택에 저장
-        CLI //클리어 인터럽트 플래그.
+        CLI //클리어 인터럽트 플래그. 인터럽트중에 예외 발생하지 않게 함(재귀?)
     }
     SendEOI();
     // 레지스터를 복원하고 원래 수행하던 곳으로 돌아간다.
@@ -42,5 +42,38 @@ __declspec(naked) void InterrputDefaultHandler () {
         IRETD //인터럽트 리턴(끝, 32비트 연산자 크기)
     }
 }
-
 ```
+
+여기서 처음보는 함수가 하나 등장한다. SendEOI();인데 이것의 구현은 아래와 같다. 난 잘 모르겠으니 찾으면 얘기해주길 바란다.
+
+```c++
+__declspec(naked) void SendEOI()
+{
+    _asm
+    {
+        PUSH EBP
+        MOV  EBP, ESP
+        PUSH EAX
+
+        ; [EBP] < -EBP
+        ; [EBP + 4] < -RET Addr
+        ; [EBP + 8] < -IRQ 번호
+
+        MOV AL, 20H; EOI 신호를 보낸다.
+        OUT DMA_PICU1, AL
+
+        CMP BYTE PTR[EBP + 8], 7
+        JBE END_OF_EOI
+        OUT DMA_PICU2, AL; Send to 2 also
+
+        END_OF_EOI :
+        POP EAX
+            POP EBP
+            RET
+    }
+}
+```
+
+## PIC라는 새로운 개념
+
+Programmable Interrupt Controller이며 입력을 처리하기 위하여 필요하다. 그냥 하드웨어인듯.
