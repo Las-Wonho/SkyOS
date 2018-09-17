@@ -1,6 +1,5 @@
 #pragma once
 #include <size_t.h>
-//표준 C 런타임 라이브러리
 
 #ifdef  __cplusplus
 extern "C" {

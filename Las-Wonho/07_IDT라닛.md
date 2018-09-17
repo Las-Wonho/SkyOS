@@ -76,4 +76,8 @@ __declspec(naked) void SendEOI()
 
 ## PIC라는 새로운 개념
 
-Programmable Interrupt Controller이며 입력을 처리하기 위하여 필요하다. 그냥 하드웨어인듯.
+Programmable Interrupt Controller이며 입력을 처리하기 위하여 필요하다. 그냥 하드웨어인듯. 그래서 이걸 사용하는 방법은 비트연산을 해주는 것이다. 우리가 쓰는 함수들은 단지 래핑한 느낌이다. 입력이 들러오면 인터럽트가 발생하는듯하다.
+
+## PIT는 또 뭐야
+
+Programmable Interval Timer이다. 그냥 타이머 역할이다. 시간을 인터럽트 형태로 알려준다.(번호 32)
