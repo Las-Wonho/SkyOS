@@ -65,8 +65,10 @@ void kmain(unsigned long magic, unsigned long addr)
 
 	kLeaveCriticalSection(&g_criticalSection);
 
-	StartPITCounter(100, I86_PIT_OCW_COUNTER_0, I86_PIT_OCW_MODE_SQUAREWAVEGEN);
-		
+	//StartPITCounter(100, I86_PIT_OCW_COUNTER_0, I86_PIT_OCW_MODE_SQUAREWAVEGEN);
+	int y = 0;
+	int t = 3;
+	SkyConsole::Print("%d", y / y);
 	for (;;);
 }
 
